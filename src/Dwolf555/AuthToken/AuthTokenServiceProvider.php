@@ -21,6 +21,7 @@ class AuthTokenServiceProvider extends ServiceProvider {
 		$this->package('dwolf555/auth-token');
 
 		include __DIR__ . '/../../routes.php';
+		include __DIR__ . '/../../filters.php';
 	}
 
 	/**
