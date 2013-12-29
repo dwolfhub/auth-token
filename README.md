@@ -9,7 +9,7 @@ Laravel token based authentication package
 Dwolf555\AuthToken\AuthTokenServiceProvider
 ```
 - Run migrations using artisan
-```Shell
+```bash
 php artisan migrate --package="dwolf555/auth-token"
 ```
 - Add a user using your own methods
