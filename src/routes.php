@@ -1,4 +1,6 @@
 <?php
+use Rhumsaa\Uuid\Uuid;
+use Rhumsaa\Uuid\Exception\UnsatisfiedDependencyException;
 
 // Login route
 Route::post('/login', function ()
@@ -18,17 +20,21 @@ Route::post('/login', function ()
     $identifierColumn = ($email === false)? 'username': 'email';
 
     // Find user
-    $user = DB::table('users');
-    $user = $user->where($identifierColumn, $identifier);
-    $user = $user->first(array('uuid', 'password'));
+    $userQuery = DB::table('users');
+    $userQuery = $userQuery->where($identifierColumn, $identifier);
+    $user = $userQuery->first(array('uuid', 'password'));
 
     // Make sure password is valid
     if (!Hash::check($password, $user->password)) {
         return Response::make('Unauthorized', 401);
     }
 
+    // Update uuid
+    $uuid = Uuid::uuid5(Uuid::NAMESPACE_DNS, $email . date('Ymd'))->toString();
+    $userQuery->update(array('uuid' => $uuid));
+
     // Return UUID
     return Response::json(array(
-        'key' => $user->uuid
+        'key' => $uuid
     ));
 });
