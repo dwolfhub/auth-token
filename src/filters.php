@@ -15,5 +15,5 @@ Route::filter('auth-token', function()
     }
 
     // Store user in session for later (assumed array sessions)
-    Session::put('user', $user);
+    Session::put('user', (array) $user);
 });
